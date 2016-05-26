@@ -2,7 +2,7 @@
 
 var getMessage = function(a, b) {
 
-	var i;
+	
 
 	if (typeof a === 'boolean') {
 	    if (a === true) {
@@ -12,28 +12,32 @@ var getMessage = function(a, b) {
 	    };
 	}
 
-    else if (typeof a === 'number') {
+    if (typeof a === 'number') {
     	return 'Я прыгнул на ' + a * 100 + ' сантиметров';
   	}
 
-  	else if (Array.isArray(a) && !Array.isArray(b)) {
-    	var sum = 0;
+  	if (Array.isArray(a) && !Array.isArray(b)) {
+  		
+    	var sum = a.reduce(function(start, current) {
+      	return start + current;
+    	});
 
-    	for (i = 0; i < a.length; i++) {
-      		sum += a[i];
-    	};
-
-		return 'Я прошёл ' + sum + ' шагов';
+    return 'Я прошёл ' + sum + ' шагов';
 
  	}
 
- 	else if (Array.isArray(a) && Array.isArray(b)) {
-		var length = 0;
+ 	if (Array.isArray(a) && Array.isArray(b)) {
 
-		for (i = 0; i < a.length; i++) {
-			length += a[i] * b[i];
-		};
+		var lengthA = a.reduce(function(start, current) {
+      return start + current;
+    });
 
-		return 'Я прошёл ' + length + ' метров';
- 	}
+    var lengthB = b.reduce(function(start, current) {
+      return start + current;
+    });
+
+    var length = lengthA + lengthB;
+
+    return 'Я прошёл ' + length + ' метров';
+  }
 };
