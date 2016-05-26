@@ -1,43 +1,35 @@
 'use strict';
 
-var getMessage = function(a, b) {
-
-	
+function getMessage(a, b) {
 
 	if (typeof a === 'boolean') {
-	    if (a === true) {
-	      	return 'Я попал в ' + b;
-	    } else {
-	      	return 'Я никуда не попал';
-	    };
+			if (a === true) {
+				return 'Я попал в ' + b;
+			}	else {
+				return 'Я никуда не попал';
+			};
 	}
 
-    if (typeof a === 'number') {
-    	return 'Я прыгнул на ' + a * 100 + ' сантиметров';
-  	}
+	if (typeof a === 'number') {
+		return 'Я прыгнул на ' + a * 100 + ' сантиметров';
+	}
 
-  	if (Array.isArray(a) && !Array.isArray(b)) {
-  		
-    	var sum = a.reduce(function(start, current) {
-      	return start + current;
-    	});
+	if (Array.isArray(a) && !Array.isArray(b)) {
+			
+		var sum = a.reduce(function(start, current) {
+			return start + current;
+		});
 
-    return 'Я прошёл ' + sum + ' шагов';
+		return 'Я прошёл ' + sum + ' шагов';
 
- 	}
+	}
 
- 	if (Array.isArray(a) && Array.isArray(b)) {
+	if (Array.isArray(a) && Array.isArray(b)) {
 
-		var lengthA = a.reduce(function(start, current) {
-      return start + current;
-    });
+		var length = a.reduce(function(count, current, index) {
+			return count + current * (b[index] || 0);
+		}, 0);
 
-    var lengthB = b.reduce(function(start, current) {
-      return start + current;
-    });
-
-    var length = Math.abs(lengthA) + Math.abs(lengthB);
-
-    return 'Я прошёл ' + length + ' метров';
-  }
+		return 'Я прошёл ' + length + ' метров';
+	}
 };
