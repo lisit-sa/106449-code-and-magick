@@ -36,7 +36,7 @@ var getMessage = function(a, b) {
       return start + current;
     });
 
-    var length = lengthA + lengthB;
+    var length = Math.abs(lengthA) + Math.abs(lengthB);
 
     return 'Я прошёл ' + length + ' метров';
   }
