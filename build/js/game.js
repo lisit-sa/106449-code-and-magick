@@ -388,8 +388,8 @@
       ctx.fill();
     },
     /**
-     * Функция вывода текста
-     */
+    * Функция вывода текста
+    */
     _showText: function(text, maxWidth) {
       var ctx = this.ctx;
       var n;
