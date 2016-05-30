@@ -375,21 +375,66 @@
     },
 
     /**
+     * Рисуем блок для сообщения
+    */
+
+    _drawBlockMessage: function(message) {
+
+      var ctx = this.ctx;
+
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.moveTo(330, 80);
+      ctx.lineTo(620, 80);
+      ctx.lineTo(600, 200);
+      ctx.lineTo(300, 200);
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.fill();
+
+      // вписываем текст в рамки сообщения
+      var words = message.split(' '),
+        countWords = words.length,
+        line = '',
+        maxWidth = 270,
+        marginLeft = 340,
+        marginTop = 110,
+        lineHeight = 18;
+
+      ctx.fillStyle = '#000000';
+      ctx.font = '16px PT Mono';
+
+      for (var n = 0; n < countWords; n++) {
+        var textLine = line + words[n] + ' ';
+        var textWidth = ctx.measureText(textLine).width;
+        if (textWidth > maxWidth) {
+          ctx.fillText(line, marginLeft, marginTop);
+          line = words[n] + ' ';
+          marginTop += lineHeight;
+        } else {
+          line = textLine;
+        }
+      }
+
+      ctx.fillText(line, marginLeft, marginTop);
+    },
+    /**
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawBlockMessage('Ура, ты выиграл! Возьми с полки пирожок');
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawBlockMessage('Ты проиграл! Не беда, сыграем еще! ');
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawBlockMessage('Игра на паузе! Давай скорее продолжим!');
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawBlockMessage('Привет! Я хочу поиграть с тобой в игру');
           break;
       }
     },
