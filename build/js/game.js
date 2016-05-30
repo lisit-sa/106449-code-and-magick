@@ -375,50 +375,61 @@
     },
 
     /**
-     * Рисуем блок для сообщения
-    */
+     * Создаем функцию вывода сообщений
+     */
 
-    _drawBlockMessage: function(message) {
-
+    _drawBlockMessage: function(text) {
       var ctx = this.ctx;
-
       ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.moveTo(330, 80);
-      ctx.lineTo(620, 80);
-      ctx.lineTo(600, 200);
-      ctx.lineTo(300, 200);
+      ctx.rect(300, 80, 300, 300);
       ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
       ctx.fill();
+    },
+    /**
+     * Функция вывода текста
+     */
+    _showText: function(text, maxWidth) {
+      var ctx = this.ctx;
+      var n;
+      var lineArray = [];
 
-      // вписываем текст в рамки сообщения
-      var words = message.split(' '),
-        countWords = words.length,
-        line = '',
-        maxWidth = 270,
-        marginLeft = 340,
-        marginTop = 110,
-        lineHeight = 18;
-
-      ctx.fillStyle = '#000000';
       ctx.font = '16px PT Mono';
+      ctx.fillStyle = '#000';
+      this.ctx.shadowOffsetX = 0;
+      this.ctx.shadowOffsetY = 0;
 
-      for (var n = 0; n < countWords; n++) {
-        var textLine = line + words[n] + ' ';
-        var textWidth = ctx.measureText(textLine).width;
-        if (textWidth > maxWidth) {
+      var lineHeight = 20;
+      var marginLeft = 100;
+      var marginTop = 20;
+
+      var words = text.split(' ');
+      var line = '';
+
+      for (n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > maxWidth) {
           ctx.fillText(line, marginLeft, marginTop);
-          line = words[n] + ' ';
           marginTop += lineHeight;
+          lineArray.push(line);
+          line = words[n] + ' ';
         } else {
-          line = textLine;
+          line = testLine;
         }
       }
 
-      ctx.fillText(line, marginLeft, marginTop);
+      lineArray.push(line);
+
+      return {
+        lineArray: lineArray,
+        height: lineHeight * lineArray.length
+      };
     },
+
+
     /**
      * Отрисовка экрана паузы.
      */
@@ -428,15 +439,16 @@
           this._drawBlockMessage('Ура, ты выиграл! Возьми с полки пирожок');
           break;
         case Verdict.FAIL:
-          this._drawBlockMessage('Ты проиграл! Не беда, сыграем еще! ');
+          this._drawBlockMessage('Проиграл? Нуу, значит без пирожка сегодня');
           break;
         case Verdict.PAUSE:
-          this._drawBlockMessage('Игра на паузе! Давай скорее продолжим!');
+          this._drawBlockMessage('Игра на паузе! Пирожок запылится!');
           break;
         case Verdict.INTRO:
-          this._drawBlockMessage('Привет! Я хочу поиграть с тобой в игру');
+          this._drawBlockMessage('Привет! Я хочу сыграть с тобой в игру');
           break;
       }
+
     },
 
     /**
