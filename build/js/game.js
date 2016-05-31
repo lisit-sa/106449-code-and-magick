@@ -375,45 +375,56 @@
     },
 
     /**
-     * Создаем функцию вывода сообщений
+     * Отрисовка сообщений экрана паузы
      */
-
-    _drawBlockMessage: function(text) {
+    _drawBlockMessage: function(maxWidth, height) {
       var ctx = this.ctx;
       ctx.fillStyle = '#fff';
-      ctx.rect(300, 80, 300, 300);
+      ctx.rect(300, 80, 300, height);
       ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
       ctx.fill();
     },
+
+    // /**
+    // * Функция вывода текста
+    // */
+    // _text: function(blockText, lineHeight) {
+    //   this.ctx.fillStyle = '#000';
+    //   this.ctx.shadowOffsetX = 0;
+    //   this.ctx.shadowOffsetY = 0;
+
+    //   var marginLeft = 300,
+    //     marginTop = 100,
+    //     n;
+
+    //   for (n = 0; n < blockText.length; n++) {
+    //     this.ctx.fillText(blockText[n], marginLeft, marginTop);
+    //     marginTop += lineHeight;
+    //   }
+    // },
+
     /**
-    * Функция вывода текста
+    * Функция расчета ширины, возвращает массив со строками
     */
     _showText: function(text, maxWidth) {
-      var ctx = this.ctx;
-      var n;
-      var lineArray = [];
+      var ctx = this.ctx,
+        n,
+        words = text.split(' '),
+        line = '',
+        lineArray = [];
 
       ctx.font = '16px PT Mono';
       ctx.fillStyle = '#000';
-      this.ctx.shadowOffsetX = 0;
-      this.ctx.shadowOffsetY = 0;
-
-      var lineHeight = 20;
-      var marginLeft = 100;
-      var marginTop = 20;
-
-      var words = text.split(' ');
-      var line = '';
+      
 
       for (n = 0; n < words.length; n++) {
         var testLine = line + words[n] + ' ';
         var testWidth = ctx.measureText(testLine).width;
-
         if (testWidth > maxWidth) {
-          ctx.fillText(line, marginLeft, marginTop);
-          marginTop += lineHeight;
+          this.ctx.shadowOffsetX = 0;
+      this.ctx.shadowOffsetY = 0;
           lineArray.push(line);
           line = words[n] + ' ';
         } else {
@@ -423,12 +434,32 @@
 
       lineArray.push(line);
 
-      return {
-        lineArray: lineArray,
-        height: lineHeight * lineArray.length
-      };
+      return lineArray;
+
     },
 
+    /**
+     * Создаем функцию вывода сообщений
+     */
+    _showMessageBlock: function(text, maxWidth) {
+      var blockText = this._showText(text, maxWidth);//массив полученных строк (lineArray)
+
+      var lineHeight = 16 * 1.5;
+      var height = lineHeight * blockText.length;//высота блока
+
+      var marginLeft = 300,
+        marginTop = 100,
+        n;
+
+      for (n = 0; n < blockText.length; n++) {
+        this.ctx.fillText(blockText[n], marginLeft, marginTop);
+        marginTop += lineHeight;
+      }
+
+      this._drawBlockMessage(maxWidth, height);//рисуем сообщение
+
+      this._text(blockText);//выводим текст
+    },
 
     /**
      * Отрисовка экрана паузы.
@@ -436,19 +467,18 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          this._drawBlockMessage('Ура, ты выиграл! Возьми с полки пирожок');
+          this._showMessageBlock('Ура, ты выиграл! Возьми с полки пирожок', 200);
           break;
         case Verdict.FAIL:
-          this._drawBlockMessage('Проиграл? Нуу, значит без пирожка сегодня');
+          this._showMessageBlock('Проиграл? Нуу, значит без пирожка сегодня', 200);
           break;
         case Verdict.PAUSE:
-          this._drawBlockMessage('Игра на паузе! Пирожок запылится!');
+          this._showMessageBlock('Игра на паузе! Пирожок запылится!', 200);
           break;
         case Verdict.INTRO:
-          this._drawBlockMessage('Привет! Я хочу сыграть с тобой в игру');
+          this._showMessageBlock('Привет! Я хочу сыграть с тобой в игруПривет! Я хочу сыграть с тобой в игруПривет! Я хочу сыграть с тобой в игру', 200);
           break;
       }
-
     },
 
     /**
