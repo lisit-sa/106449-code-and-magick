@@ -387,23 +387,23 @@
       ctx.fill();
     },
 
-    // /**
-    // * Функция вывода текста
-    // */
-    // _text: function(blockText, lineHeight) {
-    //   this.ctx.fillStyle = '#000';
-    //   this.ctx.shadowOffsetX = 0;
-    //   this.ctx.shadowOffsetY = 0;
+    /**
+    * Функция вывода текста
+    */
+    _text: function(blockText, lineHeight) {
+      this.ctx.fillStyle = '#000';
+      this.ctx.shadowOffsetX = 0;
+      this.ctx.shadowOffsetY = 0;
 
-    //   var marginLeft = 300,
-    //     marginTop = 100,
-    //     n;
+      var marginLeft = 300,
+        marginTop = 100,
+        n;
 
-    //   for (n = 0; n < blockText.length; n++) {
-    //     this.ctx.fillText(blockText[n], marginLeft, marginTop);
-    //     marginTop += lineHeight;
-    //   }
-    // },
+      for (n = 0; n < blockText.length; n++) {
+        this.ctx.fillText(blockText[n], marginLeft, marginTop);
+        marginTop += lineHeight;
+      }
+    },
 
     /**
     * Функция расчета ширины, возвращает массив со строками
@@ -416,15 +416,11 @@
         lineArray = [];
 
       ctx.font = '16px PT Mono';
-      ctx.fillStyle = '#000';
-      
 
       for (n = 0; n < words.length; n++) {
         var testLine = line + words[n] + ' ';
         var testWidth = ctx.measureText(testLine).width;
         if (testWidth > maxWidth) {
-          this.ctx.shadowOffsetX = 0;
-      this.ctx.shadowOffsetY = 0;
           lineArray.push(line);
           line = words[n] + ' ';
         } else {
@@ -446,15 +442,6 @@
 
       var lineHeight = 16 * 1.5;
       var height = lineHeight * blockText.length;//высота блока
-
-      var marginLeft = 300,
-        marginTop = 100,
-        n;
-
-      for (n = 0; n < blockText.length; n++) {
-        this.ctx.fillText(blockText[n], marginLeft, marginTop);
-        marginTop += lineHeight;
-      }
 
       this._drawBlockMessage(maxWidth, height);//рисуем сообщение
 
