@@ -379,12 +379,11 @@
      */
     _drawBlockMessage: function(maxWidth, height) {
       var ctx = this.ctx;
-      ctx.fillStyle = '#fff';
-      ctx.rect(300, 80, maxWidth, height);
       ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
-      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(300, 80, maxWidth, height);
     },
 
     /**
