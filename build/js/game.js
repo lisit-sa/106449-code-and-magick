@@ -380,7 +380,7 @@
     _drawBlockMessage: function(maxWidth, height) {
       var ctx = this.ctx;
       ctx.fillStyle = '#fff';
-      ctx.rect(300, 80, 300, height);
+      ctx.rect(300, 80, maxWidth, height);
       ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
@@ -390,12 +390,12 @@
     /**
     * Функция вывода текста
     */
-    _text: function(blockText, lineHeight) {
+    _showText: function(blockText, lineHeight) {
       this.ctx.fillStyle = '#000';
       this.ctx.shadowOffsetX = 0;
       this.ctx.shadowOffsetY = 0;
 
-      var marginLeft = 300,
+      var marginLeft = 310,
         marginTop = 100,
         n;
 
@@ -408,7 +408,7 @@
     /**
     * Функция расчета ширины, возвращает массив со строками
     */
-    _showText: function(text, maxWidth) {
+    _calculateWidth: function(text, maxWidth) {
       var ctx = this.ctx,
         n,
         words = text.split(' '),
@@ -419,7 +419,9 @@
 
       for (n = 0; n < words.length; n++) {
         var testLine = line + words[n] + ' ';
+
         var testWidth = ctx.measureText(testLine).width;
+
         if (testWidth > maxWidth) {
           lineArray.push(line);
           line = words[n] + ' ';
@@ -438,14 +440,14 @@
      * Создаем функцию вывода сообщений
      */
     _showMessageBlock: function(text, maxWidth) {
-      var blockText = this._showText(text, maxWidth);//массив полученных строк (lineArray)
+      var blockText = this._calculateWidth(text, maxWidth);//массив полученных строк (lineArray)
 
       var lineHeight = 16 * 1.5;
-      var height = lineHeight * blockText.length;//высота блока
+      var height = lineHeight * blockText.length + 20;//высота блока
 
       this._drawBlockMessage(maxWidth, height);//рисуем сообщение
 
-      this._text(blockText);//выводим текст
+      this._showText(blockText, lineHeight);//выводим текст
     },
 
     /**
@@ -454,16 +456,16 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          this._showMessageBlock('Ура, ты выиграл! Возьми с полки пирожок', 200);
+          this._showMessageBlock('Ну вот, ты выиграл! Возьми с полки пирожок и давай сыграем еще! ', 300);
           break;
         case Verdict.FAIL:
-          this._showMessageBlock('Проиграл? Нуу, значит без пирожка сегодня', 200);
+          this._showMessageBlock('Проиграл? Нуу, значит без пирожка сегодня', 300);
           break;
         case Verdict.PAUSE:
-          this._showMessageBlock('Игра на паузе! Пирожок запылится!', 200);
+          this._showMessageBlock('Игра на паузе! Пирожок запылится!', 300);
           break;
         case Verdict.INTRO:
-          this._showMessageBlock('Привет! Я хочу сыграть с тобой в игруПривет! Я хочу сыграть с тобой в игруПривет! Я хочу сыграть с тобой в игру', 200);
+          this._showMessageBlock('Привет! Я - маг Пендальф - хочу сыграть с тобой в игру. Будем швыряться фаерболами, сжигать деревья и подбивать пролетающих куриц!', 300);
           break;
       }
     },
