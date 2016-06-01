@@ -407,7 +407,7 @@
     /**
     * Функция расчета ширины, возвращает массив со строками
     */
-    _calculateWidth: function(text, MAX_WIDTH) {
+    _calculateWidth: function(text, maxWidth) {
       var ctx = this.ctx;
       var words = text.split(' ');
       var line = '';
@@ -420,7 +420,7 @@
 
         var testWidth = ctx.measureText(testLine).width;
 
-        if (testWidth > MAX_WIDTH) {
+        if (testWidth > maxWidth) {
           lineArray.push(line);
           line = words[n] + ' ';
         } else {
