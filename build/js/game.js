@@ -377,13 +377,13 @@
     /**
      * Отрисовка сообщений экрана паузы
      */
-    _drawBlockMessage: function(MAX_WIDTH, height) {
+    _drawBlockMessage: function(maxWidth, height) {
       var ctx = this.ctx;
       ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
       ctx.shadowOffsetX = 10;
       ctx.shadowOffsetY = 10;
       ctx.fillStyle = '#fff';
-      ctx.fillRect(300, 80, MAX_WIDTH, height);
+      ctx.fillRect(300, 80, maxWidth, height);
     },
 
     /**
