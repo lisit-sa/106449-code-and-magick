@@ -375,21 +375,97 @@
     },
 
     /**
+     * Отрисовка сообщений экрана паузы
+     */
+    _drawBlockMessage: function(maxWidth, height) {
+      var ctx = this.ctx;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(300, 80, maxWidth, height);
+    },
+
+    /**
+    * Функция вывода текста
+    */
+    _showText: function(blockText, lineHeight) {
+      this.ctx.fillStyle = '#000';
+      this.ctx.shadowOffsetX = 0;
+      this.ctx.shadowOffsetY = 0;
+
+      var MARGIN_LEFT = 310;
+      var MARGIN_TOP = 100;
+      var n;
+
+      for (n = 0; n < blockText.length; n++) {
+        this.ctx.fillText(blockText[n], MARGIN_LEFT, MARGIN_TOP);
+        MARGIN_TOP += lineHeight;
+      }
+    },
+
+    /**
+    * Функция расчета ширины, возвращает массив со строками
+    */
+    _calculateWidth: function(text, maxWidth) {
+      var ctx = this.ctx;
+      var words = text.split(' ');
+      var line = '';
+      var lineArray = [];
+
+      ctx.font = '16px PT Mono';
+
+      words.forEach(function(word, n) {
+        var testLine = line + words[n] + ' ';
+
+        var testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > maxWidth) {
+          lineArray.push(line);
+          line = words[n] + ' ';
+        } else {
+          line = testLine;
+        }
+      });
+
+      lineArray.push(line);
+
+      return lineArray;
+
+    },
+
+    /**
+     * Создаем функцию вывода сообщений
+     */
+    _showMessageBlock: function(text) {
+      var MAX_WIDTH = 310;
+
+      var blockText = this._calculateWidth(text, MAX_WIDTH);//массив полученных строк (lineArray)
+
+      var lineHeight = 16 * 1.5;
+      var height = lineHeight * blockText.length + 20;//высота блока
+
+      this._drawBlockMessage(MAX_WIDTH, height);//рисуем сообщение
+
+      this._showText(blockText, lineHeight);//выводим текст
+    },
+
+    /**
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._showMessageBlock('Ну вот, ты выиграл! Возьми с полки пирожок и давай сыграем еще! ');
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._showMessageBlock('Проиграл? Нуу, значит без пирожка сегодня');
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._showMessageBlock('Игра на паузе! Пирожок запылится!');
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._showMessageBlock('Привет! Я - маг Пендальф - хочу сыграть с тобой в игру. Будем швыряться фаерболами, сжигать деревья и подбивать пролетающих куриц!');
           break;
       }
     },
