@@ -16,8 +16,8 @@
   };
   /** Валидация формы - выносим переменные
   */
-  var getForm = document.querySelector('.review-form');
-  var getMark = document.querySelectorAll('input[name="review-mark"]');
+  //var getForm = document.querySelector('.review-form');
+  //var getMark = document.querySelectorAll('input[name="review-mark"]');
   var getMarkChecked = document.querySelector('input[type=radio]:checked');
   var getName = document.querySelector('#review-name');
   var getText = document.querySelector('#review-text');
@@ -25,7 +25,7 @@
   var labelForText = document.querySelector('.review-fields-text');
   var blockError = document.querySelector('.review-fields');
   var btnSubmit = document.querySelector('.review-submit');
-  var errorName = document.querySelector('.error-name-valid-message');
+  //var errorName = document.querySelector('.error-name-valid-message');
   var errorText = document.querySelector('.error-text-valid-message');
 
   /** Присваиваем при загрузке страницы кнопке аттрибут disable
@@ -48,7 +48,7 @@
       if (getText.checkValidity()) {
         btnSubmit.disabled = false;
       } else {
-        errorName.innerHTML = 'Неправильный ввод';
+        errorText.innerHTML = 'Неправильный ввод';
       }
     } else {
       getText.required = false;
