@@ -543,3 +543,11 @@ input[type=radio]:checked + .review-mark-label {
   font-size: 14px;
   color: #ffffff;
 }
+.error input,
+.error textarea {
+  border: 1px solid red;
+}
+
+.error {
+  color: red;
+}

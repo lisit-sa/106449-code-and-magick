@@ -14,4 +14,56 @@
     evt.preventDefault();
     formContainer.classList.add('invisible');
   };
+  /** Валидация формы - выносим переменные
+  */
+  var getForm = document.querySelector('.review-form');
+  var getMark = document.querySelectorAll('input[name="review-mark"]');
+  var getMarkChecked = document.querySelector('input[type=radio]:checked');
+  var getName = document.querySelector('#review-name');
+  var getText = document.querySelector('#review-text');
+  var labelForName = document.querySelector('.review-fields-name');
+  var labelForText = document.querySelector('.review-fields-text');
+  var blockError = document.querySelector('.review-fields');
+  var btnSubmit = document.querySelector('.review-submit');
+  var errorName = document.querySelector('.error-name-valid-message');
+  var errorText = document.querySelector('.error-text-valid-message');
+
+  /** Присваиваем при загрузке страницы кнопке аттрибут disable
+  */
+  btnSubmit.disabled = true;
+  /** Включаем required у обязательных полей
+  */
+  getName.required = true;
+  /** При загрузке страницы не показываем блок с тем, что нужно заполнить
+  */
+  labelForText.style.display = 'none';
+
+  /** Начинаем валидацию
+  */
+  function validate() {
+    if (getMarkChecked.value < 3) {
+      getText.required = true;
+      labelForText.style.display = 'inline-block';
+      btnSubmit.disabled = true;
+      if (getText.checkValidity()) {
+        btnSubmit.disabled = false;
+      } else {
+        errorName.innerHTML = 'Неправильный ввод';
+      }
+    } else {
+      getText.required = false;
+      btnSubmit.disabled = false;
+    }
+    if (getName.checkValidity()) {
+      errorName.style.display = 'none';
+      labelForName.style.display = 'none';
+    } else {
+      errorName.style.display = 'inline-block';
+      labelForName.style.display = 'block';
+    }
+  }
+  getName.oninput = validate;
+  getText.oninput = validate;
 })();
+
+
