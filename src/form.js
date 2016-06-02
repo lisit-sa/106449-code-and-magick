@@ -54,16 +54,27 @@
       getText.required = false;
       btnSubmit.disabled = false;
     }
-    if (getName.checkValidity()) {
-      errorName.style.display = 'none';
+  }
+
+  getName.oninput = function() {
+    if (getName.value.length > 1) {
       labelForName.style.display = 'none';
     } else {
-      errorName.style.display = 'inline-block';
-      labelForName.style.display = 'block';
+      labelForName.style.display = 'inline-block';
+      blockError.style.display = 'inline-block';
     }
-  }
-  getName.oninput = validate;
-  getText.oninput = validate;
+    validate();
+  };
+
+  getText.oninput = function() {
+    if (getText.value.length > 1) {
+      getText.style.display = 'none';
+    } else {
+      labelForText.style.display = 'inline-block';
+      blockError = 'inline-block';
+    }
+    validate();
+  };
 })();
 
 
