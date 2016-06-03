@@ -98,9 +98,18 @@
           blockError.style.display = 'inline-block';
           btnSubmit.disabled = true;
         }
+        getName.addEventListener('input', function() {
+          if (getName.value.length > 1) {
+            labelForName.style.display = 'none';
+            errorName.style.display = 'none';
+            btnSubmit.disabled = true;
+            blockError.style.display = 'inline-block';
+            labelForText.style.display = 'inline-blocks';
+          }
+        });
       } else {
         getText.required = false;
-        btnSubmit.disabled = false;
+        labelForText.style.display = 'none';
       }
     });
   }
