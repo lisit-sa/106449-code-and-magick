@@ -16,7 +16,7 @@
   };
   /** Валидация формы - выносим переменные
   */
-  //var getForm = document.querySelector('.review-form');
+  var getForm = document.querySelector('.review-form');
   var getMark = document.querySelector('.review-form-group-mark');
   var getName = document.querySelector('#review-name');
   var getText = document.querySelector('#review-text');
@@ -46,6 +46,15 @@
         errorName.style.display = 'none';
         blockError.style.display = 'none';
         btnSubmit.disabled = false;
+        getMark.addEventListener('click', function(event) {
+          var getMarkChecked = event.target;
+
+          if (getMarkChecked.value < 3) {
+            getText.required = true;
+            labelForText.style.display = 'inline-block';
+            btnSubmit.disabled = true;
+          }
+        });
       } else {
         labelForName.style.display = 'inline-block';
         blockError.style.display = 'inline-block';
@@ -60,6 +69,11 @@
         labelForText.style.display = 'none';
         errorText.style.display = 'none';
         btnSubmit.disabled = false;
+        if (getName.value.length < 1) {
+          btnSubmit.disabled = true;
+          labelForName.style.display = 'inline-block';
+          blockError.style.display = 'inline-block';
+        }
       } else {
         errorText.innerHTML = 'Неправильный ввод';
         blockError.style.display = 'inline-block';
@@ -92,5 +106,10 @@
   }
 
   validate();
+  getForm.onsubmit = function() {
+    getMark.removeEventListener('click');
+    getName.removeEventListener('input');
+    getText.removeEventListener('input');
+  };
 
 })();
