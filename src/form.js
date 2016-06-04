@@ -16,109 +16,67 @@
   };
   /** Валидация формы - выносим переменные
   */
-  var getForm = document.querySelector('.review-form');
-  var getMark = document.querySelector('.review-form-group-mark');
-  var getName = document.querySelector('#review-name');
-  var getText = document.querySelector('#review-text');
-  var labelForName = document.querySelector('.review-fields-name');
-  var labelForText = document.querySelector('.review-fields-text');
-  var blockError = document.querySelector('.review-fields');
-  var btnSubmit = document.querySelector('.review-submit');
-  var errorName = document.querySelector('.error-name-valid-message');
-  var errorText = document.querySelector('.error-text-valid-message');
+  var form = document.querySelector('.review-form');
+  var mark = form.elements.namedItem('review-mark');
+  var name = form.querySelector('#review-name');
+  var text = form.querySelector('#review-text');
+  var field = form.querySelector('.field-wrap');
+  var labelName = form.querySelector('.review-fields-name');
+  var labelText = form.querySelector('.review-fields-text');
+  var blockError = form.querySelector('.review-fields');
+  var btnSubmit = form.querySelector('.review-submit');
+  var errorName = form.querySelector('.error-name-valid-message');
+  var errorText = form.querySelector('.error-text-valid-message');
 
   /** Присваиваем при загрузке страницы кнопке аттрибут disable
   */
-  btnSubmit.disabled = true;
-  /** Включаем required у обязательных полей
-  */
-  getName.required = true;
-  /** При загрузке страницы не показываем блок с тем, что нужно заполнить
-  */
-  labelForText.style.display = 'none';
-
+  name.required = true;
   /** Начинаем валидацию
   */
-  function validate() {
-    getName.addEventListener('input', function() {
-      if (getName.value.length > 1) {
-        labelForName.style.display = 'none';
-        errorName.style.display = 'none';
-        blockError.style.display = 'none';
-        btnSubmit.disabled = false;
-        getMark.addEventListener('click', function(event) {
-          var getMarkChecked = event.target;
+  function inputValidate(element) {
+    return !element.required || Boolean(element.value.trim());
+  }
 
-          if (getMarkChecked.value < 3) {
-            getText.required = true;
-            labelForText.style.display = 'inline-block';
-            btnSubmit.disabled = true;
-          }
-        });
+  function reviewValidate() {
+    text.required = +mark.value < 3;
+
+    var isCorrectName = inputValidate(name);
+    var isCorrectText = inputValidate(text);
+    var isFormCorrect = isCorrectText && isCorrectName;
+
+    setBlockHidden(labelText, isCorrectText);
+    setBlockHidden(labelName, isCorrectName);
+    setBlockHidden(blockError, isFormCorrect);
+
+    setErrorHidden(name, errorName);
+    setErrorHidden(text, errorText);
+
+    btnSubmit.disabled = !isFormCorrect;
+
+  }
+
+  function setBlockHidden(label, setter) {
+    label.classList.toggle('invisible', setter);
+  }
+
+  function setErrorHidden(el, error) {
+    el.addEventListener('input', function() {
+      if(+el.value.length < 2) {
+        error.innerHTML = 'Неправильный ввод';
       } else {
-        labelForName.style.display = 'inline-block';
-        blockError.style.display = 'inline-block';
-        errorName.innerHTML = 'Неправильный ввод';
-        btnSubmit.disabled = true;
-      }
-    });
-
-    getText.addEventListener('input', function() {
-      if (getText.value.length > 1) {
-        blockError.style.display = 'none';
-        labelForText.style.display = 'none';
-        errorText.style.display = 'none';
-        btnSubmit.disabled = false;
-        if (getName.value.length < 1) {
-          btnSubmit.disabled = true;
-          labelForName.style.display = 'inline-block';
-          blockError.style.display = 'inline-block';
-        }
-      } else {
-        errorText.innerHTML = 'Неправильный ввод';
-        blockError.style.display = 'inline-block';
-        labelForText.style.display = 'inline-block';
-        btnSubmit.disabled = true;
-        errorText.style.display = 'inline-block';
-      }
-    });
-
-    getMark.addEventListener('click', function(event) {
-      var getMarkChecked = event.target;
-
-      if (getMarkChecked.value < 3) {
-        getText.required = true;
-        labelForText.style.display = 'inline-block';
-        btnSubmit.disabled = true;
-        blockError.style.display = 'inline-block';
-        if (getText.checkValidity()) {
-          btnSubmit.disabled = false;
-        } else {
-          labelForText.style.display = 'inline-block';
-          blockError.style.display = 'inline-block';
-          btnSubmit.disabled = true;
-        }
-        getName.addEventListener('input', function() {
-          if (getName.value.length > 1) {
-            labelForName.style.display = 'none';
-            errorName.style.display = 'none';
-            btnSubmit.disabled = true;
-            blockError.style.display = 'inline-block';
-            labelForText.style.display = 'inline-blocks';
-          }
-        });
-      } else {
-        getText.required = false;
-        labelForText.style.display = 'none';
+        error.classList.toggle('invisible');
       }
     });
   }
 
-  validate();
-  getForm.onsubmit = function() {
-    getMark.removeEventListener('click');
-    getName.removeEventListener('input');
-    getText.removeEventListener('input');
-  };
+  field.addEventListener('input', reviewValidate);
+  form.addEventListener('change', reviewValidate);
 
+  reviewValidate();
+
+  form.onsubmit = function() {
+    setErrorHidden.removeEventListener('input');
+    field.removeEventListener('input');
+    form.removeEventListener('change');
+  };
 })();

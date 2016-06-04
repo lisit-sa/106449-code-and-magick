@@ -72,19 +72,19 @@
       <input type="radio" name="review-mark" id="review-mark-4" value="4"><label class="review-mark-label review-mark-label-4" for="review-mark-4">4</label>
       <input type="radio" name="review-mark" id="review-mark-5" value="5"><label class="review-mark-label review-mark-label-5" for="review-mark-5">5</label>
     </fieldset>
-
-    <fieldset class="review-form-group">
-      <label for="review-name" class="review-form-label">Имя</label><br>
-      <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name">
-      <div class="error-name-valid-message"></div>
-    </fieldset>
-
-    <fieldset class="review-form-group">
-      <label for="review-text" class="review-form-label">Отзыв</label><br>
-      <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8"></textarea>
-      <div class="error-text-valid-message"></div>
-    </fieldset>
-
+    <div class="field-wrap">
+      <fieldset class="review-form-group">
+        <label for="review-name" class="review-form-label">Имя</label><br>
+        <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name">
+        <div class="error-valid-message error-name-valid-message"></div>
+      </fieldset>
+      
+      <fieldset class="review-form-group">
+        <label for="review-text" class="review-form-label">Отзыв</label><br>
+        <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8"></textarea>
+        <div class="error-valid-message error-text-valid-message"></div>
+      </fieldset>
+    </div>
     <div class="review-form-controls">
       <button class="review-form-control review-submit" type="submit">Добавить отзыв</button>
       <div class="review-form-control review-fields">
