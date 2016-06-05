@@ -18,6 +18,7 @@
   */
   var form = document.querySelector('.review-form');
   var mark = form.elements.namedItem('review-mark');
+  var reviewMark = document.querySelectorAll('input[name="review-mark"]');
   var name = form.querySelector('#review-name');
   var text = form.querySelector('#review-text');
   var field = form.querySelector('.field-wrap');
@@ -48,9 +49,6 @@
     setBlockHidden(labelName, isCorrectName);
     setBlockHidden(blockError, isFormCorrect);
 
-    setErrorHidden(name, errorName);
-    setErrorHidden(text, errorText);
-
     btnSubmit.disabled = !isFormCorrect;
 
   }
@@ -59,24 +57,41 @@
     label.classList.toggle('invisible', setter);
   }
 
-  function setErrorHidden(el, error) {
-    el.addEventListener('input', function() {
-      if(+el.value.length < 2) {
-        error.innerHTML = 'Неправильный ввод';
-      } else {
-        error.classList.toggle('invisible');
-      }
-    });
+  function setErrorHidden() {
+    if(name.validity.valid) {
+      errorName.classList.add('invisible');
+    } else {
+      errorName.innerHTML = 'Пожалуйста, введите значение';
+      errorName.classList.remove('invisible');
+    }
+
+    if(text.validity.valid) {
+      errorText.classList.add('invisible');
+    } else {
+      errorText.innerHTML = 'Пожалуйста, введите значение';
+      errorText.classList.remove('invisible');
+    }
   }
 
   field.addEventListener('input', reviewValidate);
-  form.addEventListener('change', reviewValidate);
+  field.addEventListener('input', setErrorHidden);
+
+  for (var i = 0; i < reviewMark.length; i++) {
+    reviewMark[i].addEventListener('change', reviewValidate);
+  }
+  for (var n = 0; n < reviewMark.length; n++) {
+    reviewMark[n].addEventListener('change', setErrorHidden);
+  }
 
   reviewValidate();
 
   form.onsubmit = function() {
-    setErrorHidden.removeEventListener('input');
     field.removeEventListener('input');
-    form.removeEventListener('change');
+    reviewMark[n].removeEventListener('change');
+  };
+
+  formCloseButton.onclick = function() {
+    field.removeEventListener('input');
+    reviewMark[n].removeEventListener('change');
   };
 })();
