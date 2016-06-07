@@ -77,16 +77,8 @@
   reviewValidate();
   setErrorHidden();
 
-  form.onsubmit = function() {
-    field.removeEventListener('change');
-    field.removeEventListener('input');
-    Array.prototype.forEach.call(mark, function(markInArray) {
-      markInArray.removeEventListener('change', reviewValidate);
-      markInArray.removeEventListener('change', setErrorHidden);
-    });
-  };
-
   var browserCookies = require('browser-cookies');
+  var MILLISECOND = 24 * 60 * 60 * 1000;
 
   name.value = browserCookies.get('name') || '';
   mark.value = browserCookies.get('mark') || '3';
@@ -99,21 +91,22 @@
     if (thisDate < birthday) {
       birthday.setFullYear(thisYear - 1);
     }
-    return Math.round((thisDate - birthday) / 24 / 60 / 60 / 1000);
+    return Math.round((thisDate - birthday) / MILLISECOND);
   }
 
-  form.onsubmit = function(event) {
-    event.preventDefault();
+  form.onsubmit = function() {
     browserCookies.set('name', name.value, {
       expires: expireCookie
-
     });
-
     browserCookies.set('mark', mark.value, {
       expires: expireCookie
+    });
+    field.removeEventListener('change');
+    field.removeEventListener('input');
+    Array.prototype.forEach.call(mark, function(markInArray) {
+      markInArray.removeEventListener('change', reviewValidate);
+      markInArray.removeEventListener('change', setErrorHidden);
     });
     this.submit();
   };
 })();
-
-
