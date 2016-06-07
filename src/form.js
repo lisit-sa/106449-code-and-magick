@@ -85,4 +85,35 @@
       markInArray.removeEventListener('change', setErrorHidden);
     });
   };
+
+  var browserCookies = require('browser-cookies');
+
+  name.value = browserCookies.get('name') || '';
+  mark.value = browserCookies.get('mark') || '3';
+
+  function expireCookie() {
+    var thisDate = new Date();
+    var thisYear = thisDate.getFullYear();
+    var birthday = new Date(thisYear, 1, 15);
+
+    if (thisDate < birthday) {
+      birthday.setFullYear(thisYear - 1);
+    }
+    return Math.round((thisDate - birthday) / 24 / 60 / 60 / 1000);
+  }
+
+  form.onsubmit = function(event) {
+    event.preventDefault();
+    browserCookies.set('name', name.value, {
+      expires: expireCookie
+
+    });
+
+    browserCookies.set('mark', mark.value, {
+      expires: expireCookie
+    });
+    this.submit();
+  };
 })();
+
+
