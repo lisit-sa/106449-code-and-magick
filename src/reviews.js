@@ -21,7 +21,7 @@ var IMAGE_LOAD_TIMEOUT = 10000;
 var getReviewElement = function(data, container) {
 
   var element = elementToClone.cloneNode(true);
-  element.querySelector('.review-rating').textContent = data.rating;
+
   element.querySelector('.review-text').textContent = data.description;
 
   container.appendChild(element);
