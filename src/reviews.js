@@ -11,7 +11,7 @@ if ('content' in templateElement) {
 }
 
 /** @constant {number} */
-// var IMAGE_LOAD_TIMEOUT = 10000;
+var IMAGE_LOAD_TIMEOUT = 10000;
 
 /**
  * @param {Object} data
@@ -23,33 +23,52 @@ var getReviewElement = function(data, container) {
   var element = elementToClone.cloneNode(true);
   element.querySelector('.review-rating').textContent = data.rating;
   element.querySelector('.review-text').textContent = data.description;
-  element.querySelector('.review-rating').textContent = data.rating;
+
   container.appendChild(element);
 
-  // var backgroundImage = new Image();
-  // var backgroundLoadTimeout;
+  var reviewRating = element.querySelector('.review-rating');
+  switch (data.rating) {
+    case 1:
+      reviewRating.classList.add('review-rating-one');
+      break;
+    case 2:
+      reviewRating.classList.add('review-rating-two');
+      break;
+    case 3:
+      reviewRating.classList.add('review-rating-three');
+      break;
+    case 4:
+      reviewRating.classList.add('review-rating-four');
+      break;
+    case 5:
+      reviewRating.classList.add('review-rating-five');
+      break;
+  }
 
-  //   backgroundImage.onload = function(evt) {
-  //       clearTimeout(backgroundLoadTimeout);
-  //       element.style.backgroundImage = 'url(\'' + evt.target.src + '\')';
-  //   };
+  var authorImage = new Image(124, 124);
+  var imageLoadTimeout;
 
-  //   backgroundImage.onerror = function() {
-  //       element.classList.add('hotel-nophoto');
-  //   };
+  authorImage.onload = function() {
+    clearTimeout(imageLoadTimeout);
+    element.replaceChild(authorImage, element.querySelector('.review-author'));
+    authorImage.classList.add('review-author');
+  };
 
-  //   backgroundImage.src = data.preview;
+  authorImage.onerror = function() {
+    element.classList.add('review-load-failure');
+  };
 
-  //   backgroundLoadTimeout = setTimeout(function() {
-  //       backgroundImage.src = '';
-  //       element.classList.add('hotel-nophoto');
-  //   }, IMAGE_LOAD_TIMEOUT);
+  authorImage.src = data.author.picture;
 
-  reviewsFilter.removeClass('invisible');
+  imageLoadTimeout = setTimeout(function() {
+    authorImage.src = '';
+    element.classList.add('review-load-failure');
+  }, IMAGE_LOAD_TIMEOUT);
+
+  reviewsFilter.classList.remove('invisible');
   return element;
 };
-console.log(rewiews)
 
-window.rewiews.forEach(function(rewiew) {
-  getReviewElement(rewiew, reviewsContainer);
+window.reviews.forEach(function(review) {
+  getReviewElement(review, reviewsContainer);
 });
