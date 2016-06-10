@@ -4,7 +4,7 @@ var reviewsContainer = document.querySelector('.reviews-list');
 var reviewsFilter = document.querySelector('.reviews-filter');
 var templateElement = document.querySelector('template');
 var elementToClone;
-
+var IMAGE_LOAD_TIMEOUT = 10000;
 var RATING_ARRAY = [
   'review-rating-one',
   'review-rating-two',
@@ -21,20 +21,14 @@ if ('content' in templateElement) {
   elementToClone = templateElement.querySelector('.review');
 }
 
-/** @constant {number} */
-var IMAGE_LOAD_TIMEOUT = 10000;
-
 /**
  * @param {Object} data
  * @param {HTMLElement} container
  * @return {HTMLElement}
  */
-var getReviewElement = function(data, container) {
-
+function getReviewElement(data, container) {
   var element = elementToClone.cloneNode(true);
-
   element.querySelector('.review-text').textContent = data.description;
-
   container.appendChild(element);
 
   element.querySelector('.review-rating').classList.add(RATING_ARRAY[+data.rating - 1]);
@@ -53,6 +47,7 @@ var getReviewElement = function(data, container) {
   };
 
   authorImage.src = data.author.picture;
+  authorImage.alt = data.author.name;
 
   imageLoadTimeout = setTimeout(function() {
     authorImage.src = '';
@@ -61,7 +56,7 @@ var getReviewElement = function(data, container) {
 
   reviewsFilter.classList.remove('invisible');
   return element;
-};
+}
 
 window.reviews.forEach(function(review) {
   getReviewElement(review, reviewsContainer);
