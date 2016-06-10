@@ -26,24 +26,15 @@ var getReviewElement = function(data, container) {
 
   container.appendChild(element);
 
-  var reviewRating = element.querySelector('.review-rating');
-  switch (data.rating) {
-    case 1:
-      reviewRating.classList.add('review-rating-one');
-      break;
-    case 2:
-      reviewRating.classList.add('review-rating-two');
-      break;
-    case 3:
-      reviewRating.classList.add('review-rating-three');
-      break;
-    case 4:
-      reviewRating.classList.add('review-rating-four');
-      break;
-    case 5:
-      reviewRating.classList.add('review-rating-five');
-      break;
-  }
+  var ratingArray = [
+    'review-rating-one',
+    'review-rating-two',
+    'review-rating-three',
+    'review-rating-four',
+    'review-rating-five'
+  ];
+
+  element.querySelector('.review-rating').classList.add(ratingArray[+data.rating - 1]);
 
   var authorImage = new Image(124, 124);
   var imageLoadTimeout;
