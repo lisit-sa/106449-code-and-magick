@@ -16,7 +16,7 @@ var RATING_ARRAY = [
 ];
 var reviews = [];
 var Filter = {
-  'ALL': 'all',
+  'ALL': 'reviews-all',
   'GOOD': 'reviews-good',
   'BAD': 'reviews-bad',
   'RECENT': 'reviews-recent',
@@ -66,7 +66,6 @@ function getReviewElement(data, container) {
 
 var renderReviews = function() {
   reviewsContainer.innerHTML = '';
-
   reviews.forEach(function(review) {
     getReviewElement(review, reviewsContainer);
   });
@@ -85,16 +84,16 @@ var getFilteredReviews = function(filter) {
 };
 
 var setFilterEnabled = function(filter) {
-  var filteredReviews = getFilteredReviews(window.reviews, filter);
+  var filteredReviews = getFilteredReviews(reviews, filter);
   renderReviews(filteredReviews);
 };
 
-var setFiltersEnabled = function(enabled) {
-  var filters = reviewsFilter.querySelectorAll('.reviews-filter-item');
+var setFiltersEnabled = function() {
+  var filters = reviewsFilter.querySelectorAll('input[type="radio"]');
   for (var i = 0; i < filters.length; i++) {
-    filters[i].onclick = enabled ? function() {
+    filters[i].onclick = function() {
       setFilterEnabled(this.id);
-    } : null;
+    };
   }
 };
 
@@ -123,6 +122,6 @@ var getReviews = function(callback) {
 
 getReviews(function(loadedReviews) {
   reviews = loadedReviews;
-  setFiltersEnabled(true);
+  setFiltersEnabled();
   setFilterEnabled(DEFAULT_FILTER);
 });
