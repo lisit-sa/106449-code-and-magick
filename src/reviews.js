@@ -84,7 +84,7 @@ var getFilteredReviews = function(filter) {
 };
 
 var setFilterEnabled = function(filter) {
-  var filteredReviews = getFilteredReviews(reviews, filter);
+  var filteredReviews = getFilteredReviews(filter);
   renderReviews(filteredReviews);
 };
 
