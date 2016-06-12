@@ -75,12 +75,11 @@ var renderReviews = function() {
 var getFilteredReviews = function(filter) {
   var reviewsToFilter = reviews.slice(0);
   switch (filter) {
-    case Filter.GOOD:
-      reviewsToFilter.filter(function(elem) {
-        return elem.rating > 2;
-      }).sort(function(a, b) {
-        return b.rating - a.rating;
+    case Filter.POPULAR:
+      reviewsToFilter.sort(function(a, b) {
+        return b.review_usefulness - a.review_usefulness;
       });
+      break;
   }
   return reviewsToFilter;
 };
@@ -91,9 +90,9 @@ var setFilterEnabled = function(filter) {
 };
 
 var setFiltersEnabled = function(enabled) {
-  var filters = reviewsFilter.querySelectorAll('.review-filter');
+  var filters = reviewsFilter.querySelectorAll('.reviews-filter-item');
   for (var i = 0; i < filters.length; i++) {
-    filters[i].onclick = enabled ? function(evt) {
+    filters[i].onclick = enabled ? function() {
       setFilterEnabled(this.id);
     } : null;
   }
