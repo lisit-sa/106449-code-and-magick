@@ -6,7 +6,9 @@ var allRewiews = document.querySelector('.reviews');
 var templateElement = document.querySelector('template');
 var elementToClone;
 
-/** @constant {number} */
+/** @constant
+ *  @type {IMAGE_LOAD_TIMEOUT}
+ */
 var IMAGE_LOAD_TIMEOUT = 10000;
 
 /** @constant {number} */
@@ -15,7 +17,10 @@ var MILLISECONDS = 4 * 24 * 60 * 60 * 1000;
 /** @constant {Array.<string>} */
 var REVIEWS_LOAD_URL = '//o0.github.io/assets/json/reviews.json';
 
-/** @type {Array.<Object>} */
+/**
+ * @constant
+ * @type {Array.<string>}
+ */
 var RATING_ARRAY = [
   'review-rating-one',
   'review-rating-two',
@@ -27,16 +32,18 @@ var RATING_ARRAY = [
 /** @type {Array.<Object>} */
 var reviews = [];
 
-/** @enum {number} */
+/** @enum {string} */
 var Filter = {
-  'ALL': 'reviews-all',
-  'GOOD': 'reviews-good',
-  'BAD': 'reviews-bad',
-  'RECENT': 'reviews-recent',
-  'POPULAR': 'reviews-popular'
+  ALL: 'reviews-all',
+  BAD: 'reviews-bad',
+  GOOD: 'reviews-good',
+  POPULAR: 'reviews-popular',
+  RECENT: 'reviews-recent'
 };
 
-/** @constant {Filter} */
+/** @constant
+ *  @type {Filter}
+ */
 var DEFAULT_FILTER = Filter.ALL;
 
 reviewsFilter.classList.toggle('invisible');
@@ -52,7 +59,6 @@ function getClone() {
 /**
  * @param {Object} data
  * @param {HTMLElement} container
- * @return {HTMLElement}
  */
 function getReviewElement(data, container) {
   var element = elementToClone.cloneNode(true);
@@ -100,7 +106,7 @@ function renderReviews(reviewsToRender) {
 }
 
 /**
- * @param {Filter} filter
+ * @param {string} filter
  */
 function getFilteredReviews(filter) {
   var reviewsToFilter = reviews.slice(0);
@@ -136,7 +142,6 @@ function getFilteredReviews(filter) {
   return reviewsToFilter;
 }
 
-/** @param {function(Filter) */
 function makeSupElement() {
   var filters = reviewsFilter.querySelectorAll('label');
   for (var i = 0; i < filters.length; i++) {
@@ -150,11 +155,16 @@ function makeSupElement() {
       filters[i].previousSibling.disabled = true;
     }
   }
-  function setSupText() {
-    var newSup = document.createElement('sup');
-    newSup.innerHTML = filterRewiews.length;
-    filters[i].appendChild(newSup);
-  }
+}
+
+/**
+ * @param {string} label
+ * @param {number} filterRewiewsLength
+ */
+function setSupText(label, filterRewiewsLength) {
+  var newSup = document.createElement('sup');
+  newSup.innerHTML = filterRewiewsLength;
+  label.appendChild(newSup);
 }
 
 /** @param {Filter} filter */
@@ -164,8 +174,7 @@ function setFilterEnabled(filter) {
 }
 
 reviewsFilter.addEventListener('change', function setFiltersEnabled(event) {
-  var target = event.target;
-  setFilterEnabled(target.id);
+  setFilterEnabled(event.target.id);
 });
 
 /** @param {function(Array.<Object>)} callback */
