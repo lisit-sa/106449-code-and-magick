@@ -7,14 +7,14 @@ var templateElement = document.querySelector('template');
 var elementToClone;
 
 /** @constant
- *  @type {IMAGE_LOAD_TIMEOUT}
+ *  @type {number}
  */
 var IMAGE_LOAD_TIMEOUT = 10000;
 
 /** @constant {number} */
 var MILLISECONDS = 4 * 24 * 60 * 60 * 1000;
 
-/** @constant {Array.<string>} */
+/** @constant {string} */
 var REVIEWS_LOAD_URL = '//o0.github.io/assets/json/reviews.json';
 
 /**
@@ -106,7 +106,7 @@ function renderReviews(reviewsToRender) {
 }
 
 /**
- * @param {string} filter
+ * @param {Filter} filter
  */
 function getFilteredReviews(filter) {
   var reviewsToFilter = reviews.slice(0);
@@ -158,7 +158,7 @@ function makeSupElement() {
 }
 
 /**
- * @param {string} label
+ * @param {Object} label
  * @param {number} filterRewiewsLength
  */
 function setSupText(label, filterRewiewsLength) {
