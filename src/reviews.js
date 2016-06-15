@@ -158,7 +158,7 @@ function makeSupElement() {
 }
 
 /**
- * @param {Object} label
+ * @param {HTMLElement} label
  * @param {number} filterRewiewsLength
  */
 function setSupText(label, filterRewiewsLength) {
