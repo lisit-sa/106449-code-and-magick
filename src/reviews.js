@@ -101,7 +101,11 @@ function getReviewElement(data, container) {
   reviewsFilter.classList.remove('invisible');
 }
 
-/** @param {Array.<Object>} reviewsToRender */
+/**
+ * @param {Array.<Object>} reviewsToRender
+ * @param {number} page
+ * @param {boolean} replace
+*/
 function renderReviews(reviewsToRender, page, replace) {
   if (replace) {
     reviewsContainer.innerHTML = '';
@@ -119,14 +123,11 @@ function renderReviews(reviewsToRender, page, replace) {
     newDiv.innerHTML = 'Нет подходящих отзывов';
     reviewsContainer.appendChild(newDiv);
   }
-  if (to < reviewsToRender.length) {
-    reviewsMore.classList.remove('invisible');
-  } else {
-    reviewsMore.classList.add('invisible');
-  }
+  reviewsMore.classList.toggle('invisible', to >= reviewsToRender.length);
 }
 
 /**
+ * @param {Array.<Object>} reviews
  * @param {Filter} filter
  */
 function getFilteredReviews(filter) {
@@ -165,17 +166,18 @@ function getFilteredReviews(filter) {
 
 function makeSupElement() {
   var filters = reviewsFilter.querySelectorAll('label');
-  for (var i = 0; i < filters.length; i++) {
-    var filtersName = filters[i].getAttribute('for');
+
+  Array.prototype.forEach.call(filters, function(filterInArray) {
+    var filtersName = filterInArray.getAttribute('for');
     var filterReviews = getFilteredReviews(filtersName);
-    setSupText(filters[i], filterReviews.length);
+    setSupText(filterInArray, filterReviews.length);
     if(filterReviews.length) {
-      filters[i].classList.remove('disabled');
+      filterInArray.classList.remove('disabled');
     } else{
-      filters[i].classList.add('disabled');
-      filters[i].previousSibling.disabled = true;
+      filterInArray.classList.add('disabled');
+      filterInArray.previousSibling.disabled = true;
     }
-  }
+  });
 }
 
 /**
@@ -202,6 +204,7 @@ function setFiltersEnabled() {
     }
   });
 }
+
 /** @param {function(Array.<Object>)} callback */
 function getReviews(callback) {
   var xhr = new XMLHttpRequest();
@@ -225,14 +228,13 @@ function getReviews(callback) {
   xhr.send();
 }
 /**
- * @param {Array} reviews
  * @param {number} page
  * @param {number} pageSize
  * @return {boolean}
  */
-var isNextPageAvailable = function(page, pageSize) {
+function isNextPageAvailable(page, pageSize) {
   return page < Math.ceil(reviews.length / pageSize);
-};
+}
 
 function showMoreReviews() {
   reviewsMore.addEventListener('click', function() {
