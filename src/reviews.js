@@ -127,8 +127,8 @@ function renderReviews(reviewsToRender, page, replace) {
 }
 
 /**
- * @param {Array.<Object>} reviews
  * @param {Filter} filter
+ * @return {Array.<Object>} reviewsToFilter
  */
 function getFilteredReviews(filter) {
   var reviewsToFilter = reviews.slice(0);
