@@ -754,6 +754,31 @@
     }
   };
 
+  var clouds = document.querySelector('.header-clouds');
+  var demoBlock = document.querySelector('.demo');
+  var lastCall = Date.now();
+  var THROTTLE_DELAY = 100;
+
+
+  function startParallax() {
+    if(clouds.getBoundingClientRect().bottom > 0) {
+      clouds.style.backgroundPosition = window.scrollY + 'px';
+    }
+  }
+
+  function pauseIfNotVisible() {
+    if(demoBlock.getBoundingClientRect().bottom < 0) {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+    }
+  }
+
+  window.addEventListener('scroll', function() {
+    if (Date.now() - lastCall >= THROTTLE_DELAY) {
+      startParallax();
+    }
+    pauseIfNotVisible();
+  });
+
   window.Game = Game;
   window.Game.Verdict = Verdict;
 
