@@ -754,6 +754,31 @@
     }
   };
 
+  //Двигаем облака и ставим игрушку на паузу
+  var clouds = document.querySelector('.header-clouds');
+  var demoBlock = document.querySelector('.demo');
+  var lastCall = Date.now();
+  var THROTTLE_DELAY = 100;
+
+  function addParallax() {
+    if(clouds.getBoundingClientRect().bottom > 0) {
+      clouds.style.backgroundPosition = window.scrollY + 'px';
+    }
+  }
+
+  function setPause() {
+    if(demoBlock.getBoundingClientRect().bottom < 0) {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+    }
+  }
+
+  window.addEventListener('scroll', function() {
+    if (Date.now() - lastCall >= THROTTLE_DELAY) {
+      addParallax();
+    }
+    setPause();
+  });
+
   window.Game = Game;
   window.Game.Verdict = Verdict;
 
