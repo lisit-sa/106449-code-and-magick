@@ -79,8 +79,6 @@
   name.value = browserCookies.get('name') || '';
   mark.value = browserCookies.get('mark') || '3';
 
-
-
   form.onsubmit = function() {
     browserCookies.set('name', name.value, {
       expires: utilities.expireCookie
