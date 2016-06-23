@@ -1,6 +1,7 @@
 'use strict';
 
 (function() {
+  var utilities = require('./utilities');
 //находим контейнер и его элементы
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
@@ -26,7 +27,7 @@
       markInArray.addEventListener('change', reviewValidate);
       markInArray.addEventListener('change', setErrorHidden);
     });
-    setBlockHidden(formContainer, false);
+    utilities.setBlockHidden(formContainer, false);
   };
 
   formCloseButton.onclick = function(evt) {
@@ -35,7 +36,7 @@
       markInArray.removeEventListener('change', reviewValidate);
       markInArray.removeEventListener('change', setErrorHidden);
     });
-    setBlockHidden(formContainer, true);
+    utilities.setBlockHidden(formContainer, true);
   };
 
   /** Присваиваем при загрузке страницы кнопке аттрибут disable
@@ -54,21 +55,17 @@
     var isCorrectText = inputValidate(text);
     var isFormCorrect = isCorrectText && isCorrectName;
 
-    setBlockHidden(labelText, isCorrectText);
-    setBlockHidden(labelName, isCorrectName);
-    setBlockHidden(blockError, isFormCorrect);
+    utilities.setBlockHidden(labelText, isCorrectText);
+    utilities.setBlockHidden(labelName, isCorrectName);
+    utilities.setBlockHidden(blockError, isFormCorrect);
 
     btnSubmit.disabled = !isFormCorrect;
 
   }
 
-  function setBlockHidden(label, setter) {
-    label.classList.toggle('invisible', setter);
-  }
-
   function setErrorHidden() {
-    setBlockHidden(errorName, name.validity.valid);
-    setBlockHidden(errorText, text.validity.valid);
+    utilities.setBlockHidden(errorName, name.validity.valid);
+    utilities.setBlockHidden(errorText, text.validity.valid);
   }
 
   field.addEventListener('input', reviewValidate);
@@ -78,28 +75,18 @@
   setErrorHidden();
 
   var browserCookies = require('browser-cookies');
-  var MILLISECOND = 24 * 60 * 60 * 1000;
 
   name.value = browserCookies.get('name') || '';
   mark.value = browserCookies.get('mark') || '3';
 
-  function expireCookie() {
-    var thisDate = new Date();
-    var thisYear = thisDate.getFullYear();
-    var birthday = new Date(thisYear, 1, 15);
 
-    if (thisDate < birthday) {
-      birthday.setFullYear(thisYear - 1);
-    }
-    return Math.round((thisDate - birthday) / MILLISECOND);
-  }
 
   form.onsubmit = function() {
     browserCookies.set('name', name.value, {
-      expires: expireCookie
+      expires: utilities.expireCookie
     });
     browserCookies.set('mark', mark.value, {
-      expires: expireCookie
+      expires: utilities.expireCookie
     });
     field.removeEventListener('change');
     field.removeEventListener('input');
