@@ -12,56 +12,67 @@
   //var prevLinkNode = document.querySelector('.overlay-gallery-control-left');
   var nextLinkNode = document.querySelector('.overlay-gallery-control-right');
 
-  /** @param {Array.<Object>} */
+  //* @param {Array.<Object>}
   var galleryPictures = [];
   var currentImgIndex = 0;
 
   var KEY_CODE_ESC = 27;
-  var picture = new Image();
 
-  function showGallery() {
-    Array.prototype.forEach.call(images, function(imageInArray) {
-      imageInArray.addEventListener('click', function(evt) {
-        evt.preventDefault();
-        galleryBlock.classList.remove('invisible');
-        picturesContainer.innerHTML = '';
-        picturesContainer.appendChild(picture);
-        picture.src = evt.target.src;
-        currentNumber.innerHTML = imageInArray;
-        allNumbers.innerHTML = images.length;
-      });
+  // функция сохранения массива из фотографий
+  function saveImages() {
+    galleryPictures = Array.prototype.map.call(images, function(imageInArray) {
+      return imageInArray.getAttribute('src');
     });
+    return galleryPictures;
   }
-
+  //Показ следующей картинки
   function nextImage() {
-    nextLinkNode.addEventListener('click', function() {
-      var nextImgIndex = currentImgIndex + 1;
-      if(nextImgIndex < galleryPictures.length) {
-        currentImgIndex = nextImgIndex;
-        picture.src = galleryPictures[nextImgIndex.src];
-      }
+    nextLinkNode.addEventListener('click', function(number) {
+      number = currentImgIndex + 1;
+      showGallery(number);
+      showPicture(number.src);
     });
   }
-
+  //скрываем галерею
   function hideGallery() {
     galleryBlock.classList.add('invisible');
+    document.removeEventListener('keydown', closeGallery());
+    closeBtn.removeEventListener('click', closeGallery());
   }
-
+  //скрываем галерею
   function closeGallery() {
     closeBtn.addEventListener('click', function() {
       hideGallery();
-      closeBtn.removeEventListener('click');
     });
     document.addEventListener('keydown', function(evt) {
       if (evt.which === KEY_CODE_ESC) {
         hideGallery();
-        document.removeEventListener('keydown');
       }
     });
   }
+  //функция показа галереи
+  function showGallery(index) {
+    Array.prototype.forEach.call(images, function(image) {
+      image.addEventListener('click', function(evt) {
+        var imgIndex = galleryPictures.indexOf(index);
+        galleryBlock.classList.remove('invisible');
+        saveImages(galleryPictures[imgIndex]);
+        showPicture(evt.target.src);
+      });
+    });
+    nextImage();
+    closeGallery();
+  }
+  //функция показа фотографии
+  function showPicture(pic) {
+    picturesContainer.innerHTML = '';
+    var picture = new Image();
+    picturesContainer.appendChild(picture);
+    picture.src = pic;
+    currentNumber.innerHTML = currentImgIndex + 1;
+    allNumbers.innerHTML = images.length;
+  }
 
-  closeGallery();
-  nextImage();
-  showGallery();
+  showGallery(currentImgIndex);
 
 })();
