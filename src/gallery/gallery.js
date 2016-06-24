@@ -9,12 +9,15 @@
   var images = document.querySelectorAll('.photogallery-image > img');
   var currentNumber = document.querySelector('.preview-number-current');
   var allNumbers = document.querySelector('.preview-number-total');
+  //var prevLinkNode = document.querySelector('.overlay-gallery-control-left');
+  var nextLinkNode = document.querySelector('.overlay-gallery-control-right');
 
   /** @param {Array.<Object>} */
-  // var galleryPictures = [];
-  // var currentImage = 0;
+  var galleryPictures = [];
+  var currentImgIndex = 0;
 
   var KEY_CODE_ESC = 27;
+  var picture = new Image();
 
   function showGallery() {
     Array.prototype.forEach.call(images, function(imageInArray) {
@@ -22,12 +25,21 @@
         evt.preventDefault();
         galleryBlock.classList.remove('invisible');
         picturesContainer.innerHTML = '';
-        var picture = new Image();
         picturesContainer.appendChild(picture);
         picture.src = evt.target.src;
         currentNumber.innerHTML = imageInArray;
         allNumbers.innerHTML = images.length;
       });
+    });
+  }
+
+  function nextImage() {
+    nextLinkNode.addEventListener('click', function() {
+      var nextImgIndex = currentImgIndex + 1;
+      if(nextImgIndex < galleryPictures.length) {
+        currentImgIndex = nextImgIndex;
+        picture.src = galleryPictures[nextImgIndex.src];
+      }
     });
   }
 
@@ -49,6 +61,7 @@
   }
 
   closeGallery();
+  nextImage();
   showGallery();
 
 })();
