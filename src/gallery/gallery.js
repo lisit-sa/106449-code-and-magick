@@ -29,7 +29,6 @@
    * @param {Array.<Object>} evt
    */
   function onContainerClick(evt) {
-    evt.preventDefault();
     if (evt.target.dataset.number !== void 0) {
       showGallery(Number(evt.target.dataset.number));
     }
@@ -43,7 +42,7 @@
     nextLinkNode.addEventListener('click', showNextPic);
     prevLinkNode.addEventListener('click', showPrevPic);
 
-    closeBtn.addEventListener('click', closeGalleryBtn);
+    closeBtn.addEventListener('click', hideGallery);
     document.addEventListener('keydown', closeGalleryEsc);
 
     utilities.setBlockHidden(galleryBlock);
@@ -91,10 +90,6 @@
     }
   }
 
-  function closeGalleryBtn() {
-    hideGallery();
-  }
-
   function closeGalleryEsc(evt) {
     if (evt.which === KEY_CODE_ESC) {
       hideGallery();
@@ -106,7 +101,7 @@
 
     prevLinkNode.removeEventListener('click', showPrevPic);
 
-    closeBtn.removeEventListener('click', closeGalleryBtn);
+    closeBtn.removeEventListener('click', hideGallery);
 
     document.removeEventListener('keydown', closeGalleryEsc);
 
