@@ -6,6 +6,7 @@
   var utilities = require('../utilities');
   var reviewElement = require('./getReviewElement');
   var load = require('./load');
+  var Review = require('./review');
 
   var reviewsContainer = document.querySelector('.reviews-list');
   var reviewsFilter = document.querySelector('.reviews-filter');
@@ -31,6 +32,9 @@
   /** @type {Array.<Object>} */
   var filteredReviews = [];
 
+  /** @type {Array.<Object>} */
+  var savedReviews = [];
+
   reviewsFilter.classList.toggle('invisible');
 
   /**
@@ -40,7 +44,11 @@
   */
   function renderReviews(reviewsToRender, page, replace) {
     if (replace) {
-      reviewsContainer.innerHTML = '';
+      savedReviews.forEach(function(review) {
+        review.remove();
+      });
+
+      savedReviews = [];
     }
 
     var from = page * PAGE_SIZE;
@@ -48,7 +56,7 @@
 
     if (reviewsToRender.length) {
       reviewsToRender.slice(from, to).forEach(function(review) {
-        reviewElement(review, reviewsContainer);
+        savedReviews.push(new Review(review, reviewsContainer));
       });
     } else{
       var newDiv = document.createElement('div');

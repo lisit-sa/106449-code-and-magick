@@ -58,6 +58,8 @@ function getReviewElement(data, container) {
     element.classList.add('review-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
 
+  return element;
+
 }
 
 module.exports = getReviewElement;
