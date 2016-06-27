@@ -7,45 +7,47 @@ var utilities = require('../utilities');
  */
 function Gallery(images, galleryBlock, photoGallery) {
   var self = this;
-  var closeBtn = document.querySelector('.overlay-gallery-close');
-  var picturesContainer = document.querySelector('.gallery-container');
-  var currentNumber = document.querySelector('.preview-number-current');
-  var totalNumber = document.querySelector('.preview-number-total');
-  var prevLinkNode = document.querySelector('.overlay-gallery-control-left');
-  var nextLinkNode = document.querySelector('.overlay-gallery-control-right');
+  this.closeBtn = document.querySelector('.overlay-gallery-close');
+  this.picturesContainer = document.querySelector('.gallery-container');
+  this.currentNumber = document.querySelector('.preview-number-current');
+  this.totalNumber = document.querySelector('.preview-number-total');
+  this.prevLinkNode = document.querySelector('.overlay-gallery-control-left');
+  this.nextLinkNode = document.querySelector('.overlay-gallery-control-right');
 
   //* @param {Array.<Object>}
-  var galleryPictures = [];
+  this.galleryPictures = [];
 
   /** @constant {number} */
-  var KEY_CODE_ESC = 27;
+  this.KEY_CODE_ESC = 27;
 
   var currentIndex;
 
-  var img = new Image();
+  this.img = new Image();
 
   this.photoGallery = photoGallery;
-  photoGallery.addEventListener('click', this.onContainerClick);
 
   /**
    * @param {Array.<Object>} evt
    */
   this.onContainerClick = function(evt) {
+    evt.preventDefault();
     if (evt.target.dataset.number !== void 0) {
       self.showGallery(Number(evt.target.dataset.number));
     }
   };
+
+  this.photoGallery.addEventListener('click', this.onContainerClick);
 
   /**
    * @param {number} pictureNumber
    */
   this.showGallery = function(pictureNumber) {
 
-    nextLinkNode.addEventListener('click', self.showNextPic);
-    prevLinkNode.addEventListener('click', self.showPrevPic);
+    self.nextLinkNode.addEventListener('click', this.showNextPic);
+    self.prevLinkNode.addEventListener('click', this.showPrevPic);
 
-    closeBtn.addEventListener('click', self.hideGallery);
-    document.addEventListener('keydown', self.closeGalleryEsc);
+    self.closeBtn.addEventListener('click', this.hideGallery);
+    document.addEventListener('keydown', this.closeGalleryEsc);
 
     utilities.setBlockHidden(galleryBlock);
 
@@ -66,18 +68,18 @@ function Gallery(images, galleryBlock, photoGallery) {
   this.showPicture = function(pictureNumber) {
     currentIndex = pictureNumber;
 
-    if (currentIndex > galleryPictures.length - 1) {
+    if (currentIndex > this.galleryPictures.length - 1) {
       currentIndex = 0;
     }
 
     if (currentIndex < 0) {
-      currentIndex = galleryPictures.length - 1;
+      currentIndex = this.galleryPictures.length - 1;
     }
 
-    img.setAttribute('src', galleryPictures[currentIndex]);
-    picturesContainer.appendChild(img);
-    currentNumber.textContent = currentIndex + 1;
-    totalNumber.textContent = images.length;
+    this.img.setAttribute('src', this.galleryPictures[currentIndex]);
+    this.picturesContainer.appendChild(this.img);
+    this.currentNumber.textContent = currentIndex + 1;
+    this.totalNumber.textContent = images.length;
   };
 
   /**
@@ -86,26 +88,26 @@ function Gallery(images, galleryBlock, photoGallery) {
   this.collectPictures = function(nodeList) {
     var i;
     for (i = 0; i < nodeList.length; i++) {
-      galleryPictures.push(nodeList[i].getAttribute('src'));
+      this.galleryPictures.push(nodeList[i].getAttribute('src'));
 
       nodeList[i].dataset.number = i;
     }
   };
 
   this.closeGalleryEsc = function(evt) {
-    if (evt.which === KEY_CODE_ESC) {
+    if (evt.which === self.KEY_CODE_ESC) {
       self.hideGallery();
     }
   };
 
   this.hideGallery = function() {
-    nextLinkNode.removeEventListener('click', self.showNextPic);
+    self.nextLinkNode.removeEventListener('click', this.showNextPic);
 
-    prevLinkNode.removeEventListener('click', self.showPrevPic);
+    self.prevLinkNode.removeEventListener('click', this.showPrevPic);
 
-    closeBtn.removeEventListener('click', self.hideGallery);
+    self.closeBtn.removeEventListener('click', this.hideGallery);
 
-    document.removeEventListener('keydown', self.closeGalleryEsc);
+    document.removeEventListener('keydown', this.closeGalleryEsc);
 
     utilities.setBlockHidden(galleryBlock);
   };
