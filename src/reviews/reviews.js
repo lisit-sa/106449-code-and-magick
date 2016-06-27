@@ -4,7 +4,6 @@
   var filtersReviews = require('./filters/filters');
   var filterList = require('./filters/filterlist');
   var utilities = require('../utilities');
-  var reviewElement = require('./getReviewElement');
   var load = require('./load');
   var Review = require('./review');
 
