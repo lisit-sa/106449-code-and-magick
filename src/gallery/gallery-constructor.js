@@ -3,31 +3,62 @@
 var utilities = require('../utilities');
 
 /**
+ * @param{Array<Object>} images
+ * @param {HTMLElement} galleryBlock
+ * @param {HTMLElement} photoGallery
  * @constructor
  */
 function Gallery(images, galleryBlock, photoGallery) {
   var self = this;
-  this.closeBtn = document.querySelector('.overlay-gallery-close');
+  /**
+  * @type {HTMLElement}
+  */
   this.picturesContainer = document.querySelector('.gallery-container');
+  /**
+  * @type {HTMLElement}
+  */
   this.currentNumber = document.querySelector('.preview-number-current');
+  /**
+  * @type {HTMLElement}
+  */
   this.totalNumber = document.querySelector('.preview-number-total');
+  /**
+  * @type {HTMLElement}
+  */
+  this.closeBtn = document.querySelector('.overlay-gallery-close');
+  /**
+  * @type {HTMLElement}
+  */
   this.prevLinkNode = document.querySelector('.overlay-gallery-control-left');
+  /**
+  * @type {HTMLElement}
+  */
   this.nextLinkNode = document.querySelector('.overlay-gallery-control-right');
 
-  //* @param {Array.<Object>}
+  /**
+   * @type {Array}
+   */
   this.galleryPictures = [];
 
-  /** @constant {number} */
+  /**
+   * @type {Number}
+   */
   this.KEY_CODE_ESC = 27;
 
   var currentIndex;
 
+  /**
+  * @type {Image}
+  */
   this.img = new Image();
 
+  /**
+  * @type {HTMLElement}
+  */
   this.photoGallery = photoGallery;
 
   /**
-   * @param {Array.<Object>} evt
+   * @param {Event} evt
    */
   this.onContainerClick = function(evt) {
     evt.preventDefault();
@@ -83,7 +114,7 @@ function Gallery(images, galleryBlock, photoGallery) {
   };
 
   /**
-   * @param {Array.<number>} nodeList
+   * @param {Array.<Object>} nodeList
    */
   this.collectPictures = function(nodeList) {
     var i;
@@ -93,7 +124,9 @@ function Gallery(images, galleryBlock, photoGallery) {
       nodeList[i].dataset.number = i;
     }
   };
-
+  /**
+   * @param {Event} evt
+   */
   this.closeGalleryEsc = function(evt) {
     if (evt.which === self.KEY_CODE_ESC) {
       self.hideGallery();
