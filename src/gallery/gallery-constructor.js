@@ -3,7 +3,7 @@
 var utilities = require('../utilities');
 
 /**
- * @param{Array<Object>} images
+ * @param{Object} images
  * @param {HTMLElement} galleryBlock
  * @param {HTMLElement} photoGallery
  * @constructor
@@ -41,7 +41,7 @@ function Gallery(images, galleryBlock, photoGallery) {
   this.galleryPictures = [];
 
   /**
-   * @type {Number}
+   * @type {number}
    */
   this.KEY_CODE_ESC = 27;
 
