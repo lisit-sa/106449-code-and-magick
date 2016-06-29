@@ -96,12 +96,16 @@
     filteredReviews = filtersReviews(reviews, filter);
     pageNumber = 0;
     renderReviews(filteredReviews, pageNumber, true);
+    var currentFilter = document.getElementById(filter);
+    currentFilter.setAttribute('checked', true);
   }
 
   function setFiltersEnabled() {
     reviewsFilter.addEventListener('change', function(evt) {
       if (evt.target.hasAttribute('name')) {
-        setFilterEnabled(evt.target.id);
+        var thisFilter = evt.target.id;
+        setFilterEnabled(thisFilter);
+        localStorage.setItem('savedFilter', thisFilter);
       }
     });
   }
@@ -118,8 +122,12 @@
   load(REVIEWS_LOAD_URL, function(loadedReviews) {
     reviews = loadedReviews;
     setFiltersEnabled();
+    if (localStorage.getItem('savedFilter') === null) {
+      setFilterEnabled(DEFAULT_FILTER);
+    } else {
+      setFilterEnabled(localStorage.getItem('savedFilter'));
+    }
     makeSupElement();
-    setFilterEnabled(DEFAULT_FILTER);
     showMoreReviews();
     reviewsFilter.classList.remove('invisible');
   });
