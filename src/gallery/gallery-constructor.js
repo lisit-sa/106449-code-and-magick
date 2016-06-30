@@ -3,7 +3,7 @@
 var utilities = require('../utilities');
 
 /**
- * @param{Object} images
+ * @param{Array.<Object>} images
  * @param {HTMLElement} galleryBlock
  * @param {HTMLElement} photoGallery
  * @constructor
@@ -35,12 +35,15 @@ function Gallery(images, galleryBlock, photoGallery) {
   */
   this.nextLinkNode = document.querySelector('.overlay-gallery-control-right');
 
+  this.hashRegExp = /#photo\/(\S+)/;
+
   /**
    * @type {Array}
    */
   this.galleryPictures = [];
 
   /**
+   * @constant
    * @type {number}
    */
   this.KEY_CODE_ESC = 27;
@@ -56,14 +59,23 @@ function Gallery(images, galleryBlock, photoGallery) {
   * @type {HTMLElement}
   */
   this.photoGallery = photoGallery;
-
+  /**
+  * @param  {string} imgUrl
+  */
+  this.changeUrl = function(imgUrl) {
+    if (imgUrl) {
+      window.location.hash = '#photo/' + imgUrl;
+    } else {
+      window.location.hash = '';
+    }
+  };
   /**
    * @param {Event} evt
    */
   this.onContainerClick = function(evt) {
     evt.preventDefault();
     if (evt.target.dataset.number !== void 0) {
-      self.showGallery(Number(evt.target.dataset.number));
+      self.changeUrl(evt.target.getAttribute('src'));
     }
   };
 
@@ -86,17 +98,22 @@ function Gallery(images, galleryBlock, photoGallery) {
   };
 
   this.showNextPic = function() {
-    self.showPicture(++currentIndex);
+    var nextSrc = self.galleryPictures[++currentIndex] || self.galleryPictures[0];
+    self.showGallery(++currentIndex);
+    self.changeUrl(nextSrc);
   };
 
   this.showPrevPic = function() {
-    self.showPicture(--currentIndex);
+    var nextSrc = self.galleryPictures[--currentIndex] || self.galleryPictures[self.galleryPictures.length - 1];
+    self.showGallery(--currentIndex);
+    self.changeUrl(nextSrc);
   };
 
   /**
    * @param {number} pictureNumber
    */
   this.showPicture = function(pictureNumber) {
+
     currentIndex = pictureNumber;
 
     if (currentIndex > this.galleryPictures.length - 1) {
@@ -134,6 +151,8 @@ function Gallery(images, galleryBlock, photoGallery) {
   };
 
   this.hideGallery = function() {
+    self.changeUrl();
+
     self.nextLinkNode.removeEventListener('click', this.showNextPic);
 
     self.prevLinkNode.removeEventListener('click', this.showPrevPic);
@@ -146,6 +165,17 @@ function Gallery(images, galleryBlock, photoGallery) {
   };
 
   self.collectPictures(images);
+
+  this.onHashChange = function() {
+    var hashValidate = location.hash.match(/#photo\/(\S+)/);
+    if (hashValidate) {
+      var pictureIndex = self.galleryPictures.indexOf(hashValidate[1]);
+      self.showGallery(pictureIndex);
+    }
+  };
+  this.onHashChange();
+
+  window.addEventListener('hashchange', this.onHashChange);
 
 }
 
