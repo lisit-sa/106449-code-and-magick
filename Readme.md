@@ -1,6 +1,6 @@
 # Personal project «Code & magic» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
-* Student: [Kristina](https://up.htmlacademy.ru/javascript/5/user/106449).
+* Student: [Kristina](https://htmlacademy.ru/profile/id106449).
 * Teacher: `Nataly`.
 
 ---
